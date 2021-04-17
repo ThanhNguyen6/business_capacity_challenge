@@ -4,9 +4,11 @@ import 'package:opun_challenge/util/app_style.dart';
 // TODO: save these values and use them in the home screen
 
 class SettingsScreen extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromARGB(240, 227, 245, 239),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

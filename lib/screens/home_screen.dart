@@ -15,13 +15,13 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   final _minCounter=0;
   final _maxCounter=30;
-  Color _c = Colors.white;
+  Color _c = Color.fromARGB(240, 227, 245, 239);
 
   void _incrementCounter(int inc) {
     int temp = _counter + inc;
     if (_minCounter <= temp && temp< _maxCounter ) {
       setState(() => _counter += inc);
-      _c = Colors.white;
+      _c = Color.fromARGB(240, 227, 245, 239);
     }
     if (temp == _maxCounter) {
       setState(() {

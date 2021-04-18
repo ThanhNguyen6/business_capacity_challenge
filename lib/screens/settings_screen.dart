@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:opun_challenge/util/app_style.dart';
 import 'package:provider/provider.dart';
@@ -95,8 +96,9 @@ class SettingsScreen extends StatelessWidget {
                         _formKey.currentState.save();
                         //String title = bInfo.name;
                         //int capacity = bInfo.capacity;
-                        String title = 'Capacity Counter';
-                        int capacity = 20;
+                        String title = businessProvider.name ?? 'Capacity Counter';
+                        int capacity = businessProvider.capacity ?? 20;
+                        int currentCount = businessProvider.count ?? 0;
                         if (tempTitle != null && tempTitle.isNotEmpty) {
                           title = tempTitle;
                           businessProvider.businessName(tempTitle);
@@ -104,8 +106,11 @@ class SettingsScreen extends StatelessWidget {
                         if (tempCapacity != null && tempCapacity.isNotEmpty) {
                           capacity = num.tryParse(tempCapacity);
                           businessProvider.businessCapacity(num.tryParse(tempCapacity));
+                          if (capacity < currentCount) {
+                            businessProvider.businessCount(0);
+                          }
                         }
-                        await crudProvider.updateBusiness(Business(name:title, capacity: capacity, count: businessProvider.count), 'test');
+                        await crudProvider.updateBusiness(Business(name:title, capacity: capacity, count: currentCount), 'test');
                       }
                     },
                   ),

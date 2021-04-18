@@ -71,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         onPressed: () async {
                             int updateCount = _incrementCounter(-1, cap, currentCount);
                             businessProvider.businessCount(updateCount);
-                            await crudProvider.updateBusiness(Business(name:businessProvider.name, capacity: businessProvider.capacity, count: updateCount), 'test')
+                            await crudProvider.updateBusiness(Business(name:businessProvider.name, capacity: businessProvider.capacity, count: updateCount), 'test');
                             },
                       ),
                       IconButton(
@@ -79,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         onPressed: () async {
                           int updateCount = _incrementCounter(1, cap, currentCount);
                           businessProvider.businessCount(updateCount);
-                          await crudProvider.updateBusiness(Business(name:businessProvider.name, capacity: businessProvider.capacity, count: updateCount), 'test')
+                          await crudProvider.updateBusiness(Business(name:businessProvider.name, capacity: businessProvider.capacity, count: updateCount), 'test');
                         },
                       ),
                     ],

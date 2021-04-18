@@ -18,7 +18,10 @@ class SettingsScreen extends StatelessWidget {
     }
     var n = num.tryParse(value);
     if (n < 0) {
-      return 'Capacity can be less than 0';
+      return 'Capacity can not be less than 0';
+    }
+    if (n > 99) {
+      return 'Capacity can not be over 99';
     }
     return null;
   }

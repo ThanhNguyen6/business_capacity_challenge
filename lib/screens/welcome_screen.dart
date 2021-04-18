@@ -2,20 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:opun_challenge/util/app_style.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import '../core/models/businessInfo.dart';
 import '../core/viewmodels/CRUDModel.dart';
 
 //TODO: improve design of the welcome screen
 
 class WelcomeScreen extends StatelessWidget {
+  final String title;
+  WelcomeScreen({this.title});
+
   static const double IMAGE_WIDTH = 350;
   static const double IMAGE_HEIGHT = 230;
+
   @override
   Widget build(BuildContext context) {
-
     //final businessProvider = Provider.of<CRUDModel>(context);
     //final business = await businessProvider.getBusinessById('test');
-    final businessName = "Capacity Counter";
     return Scaffold(
       backgroundColor: Color.fromARGB(240, 227, 245, 239),
       body: Center(
@@ -48,7 +49,7 @@ class WelcomeScreen extends StatelessWidget {
             SizedBox(
               height: 10,
             ),
-            Text('To ${business.name}', style: GoogleFonts.yesevaOne(
+            Text('To $title', style: GoogleFonts.yesevaOne(
               textStyle: TextStyle(color: Color(0xFF650C2A), fontWeight: FontWeight.bold, fontSize: 30.0),
             ), //child
             ),

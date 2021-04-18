@@ -3,9 +3,9 @@ class Business {
   String id;
   String name;
   int capacity;
-  int count;
+  //int count;
 
-  Business({this.id, this.name, this.capacity, this.count});
+  Business({this.id, this.name, this.capacity});
 
   /*
   Business.fromSnapshot(DocumentSnapshot snapShot) :
@@ -19,14 +19,14 @@ class Business {
   Business.fromMap(Map snapshot, String id):
         id = id ?? '',
         name = snapshot['name'] ?? 'Capacity Counter',
-        capacity = snapshot['capacity'] ?? 20,
-        count = snapshot['count'] ?? 0;
+        capacity = snapshot['capacity'] ?? 20;
+        //count = snapshot['count'] ?? 0;
 
   toJson() {
     return {
       "name": name,
       "capacity": capacity,
-      "count": count,
+      //"count": count,
     };
   }
 }

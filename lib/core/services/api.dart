@@ -31,5 +31,4 @@ class Api{
     return ref.doc(id).update(data) ;
   }
 
-
 }

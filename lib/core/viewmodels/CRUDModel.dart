@@ -10,7 +10,7 @@ class CRUDModel extends ChangeNotifier {
 
   List<Business> businesses;
 
-  Future<List<Business>> fetchProducts() async {
+  Future<List<Business>> fetchBusinesses() async {
     var result = await _api.getDataCollection();
     businesses = result.docs
         .map((doc) => Business.fromMap(doc.data(), doc.id))
@@ -18,27 +18,26 @@ class CRUDModel extends ChangeNotifier {
     return businesses;
   }
 
-  Stream<QuerySnapshot> fetchProductsAsStream() {
+  Stream<QuerySnapshot> fetchBusinessesAsStream() {
     return _api.streamDataCollection();
   }
 
   Future<Business> getBusinessById(String id) async {
     var doc = await _api.getDocumentById(id);
-    print(doc.data()['name']);
     return  Business.fromMap(doc.data(), doc.id) ;
   }
 
 
-  Future removeProduct(String id) async{
+  Future removeBusiness(String id) async{
     await _api.removeDocument(id) ;
     return ;
   }
-  Future updateProduct(Business data,String id) async{
+  Future updateBusiness(Business data,String id) async{
     await _api.updateDocument(data.toJson(), id) ;
     return ;
   }
 
-  Future addProduct(Business data) async{
+  Future addBusiness(Business data) async{
     var result  = await _api.addDocument(data.toJson()) ;
     return ;
 

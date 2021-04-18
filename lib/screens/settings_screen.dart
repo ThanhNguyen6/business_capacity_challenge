@@ -4,21 +4,11 @@ import 'package:provider/provider.dart';
 import '../core/viewmodels/CRUDModel.dart';
 import '../core/models/businessInfo.dart';
 // TODO: save these values and use them in the home screen
-/*
-class SettingsScreen extends StatefulWidget {
-  final Business bInfo;
-  SettingsScreen({Key key, this.bInfo}) : super(key: key);
-  @override
-  _SettingsScreenState createState() => _SettingsScreenState();
-}
 
-class _SettingsScreenState extends State<SettingsScreen> {
-
- */
 
 class SettingsScreen extends StatelessWidget {
-  final Business bInfo;
-  SettingsScreen({this.bInfo});
+  //final Business bInfo;
+  //SettingsScreen({this.bInfo});
   final _formKey = GlobalKey<FormState>();
 
   String capacityValidator(String value) {
@@ -36,9 +26,10 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     String tempTitle;
     String tempCapacity;
-    final businessProvider = Provider.of<CRUDModel>(context);
-
+    final crudProvider = Provider.of<CRUDModel>(context);
+    final businessProvider = Provider.of<Business>(context);
     return Scaffold(
+      backgroundColor: Color.fromARGB(240, 227, 245, 239),
       body: Center(
         child: Form(
           key:_formKey,
@@ -102,15 +93,19 @@ class SettingsScreen extends StatelessWidget {
                     onPressed: () async {
                       if (_formKey.currentState.validate()) {
                         _formKey.currentState.save();
-                        String title = bInfo.name;
-                        int capacity = bInfo.capacity;
+                        //String title = bInfo.name;
+                        //int capacity = bInfo.capacity;
+                        String title = 'Capacity Counter';
+                        int capacity = 20;
                         if (tempTitle != null && tempTitle.isNotEmpty) {
                           title = tempTitle;
+                          businessProvider.businessName(tempTitle);
                         }
                         if (tempCapacity != null && tempCapacity.isNotEmpty) {
                           capacity = num.tryParse(tempCapacity);
+                          businessProvider.businessCapacity(num.tryParse(tempCapacity));
                         }
-                        await businessProvider.updateBusiness(Business(name:title, capacity: capacity), 'test');
+                        await crudProvider.updateBusiness(Business(name:title, capacity: capacity, count: businessProvider.count), 'test');
                       }
                     },
                   ),

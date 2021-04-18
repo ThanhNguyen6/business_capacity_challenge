@@ -13,28 +13,25 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   setupLocator();
-  DocumentSnapshot snapshot= await FirebaseFirestore.instance.collection('businessInfo').doc('test').get();
-  Business businessInfo = Business.fromMap(snapshot.data(), 'test');
-  runApp(MyApp(businessInfo));
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final Business bInfo;
-  MyApp(this.bInfo);
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => locator<CRUDModel>()),
+        ChangeNotifierProvider(create: (_) => Business()),
       ],
       child: MaterialApp(
         title: 'Capacity Counter',
         routes: {
           // default route:
-          '/': (context) => WelcomeScreen(title: bInfo.name),
-          '/home': (context) => MyHomePage(title: bInfo.name),
-          '/settings': (context) => SettingsScreen(bInfo: bInfo),
+          '/': (context) => WelcomeScreen(),
+          '/home': (context) => MyHomePage(title: "Capacity Counter"),
+          '/settings': (context) => SettingsScreen(),
         },
       ) //Material App
     );

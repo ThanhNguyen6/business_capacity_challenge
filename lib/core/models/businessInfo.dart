@@ -1,32 +1,47 @@
+import 'package:flutter/foundation.dart';
+import 'package:provider/provider.dart';
+
 /// Represents the stats from the Firebase service
-class Business {
+class Business extends ChangeNotifier {
   String id;
   String name;
   int capacity;
-  //int count;
+  int count;
 
-  Business({this.id, this.name, this.capacity});
+  Business({this.id, this.name, this.capacity, this.count});
 
-  /*
-  Business.fromSnapshot(DocumentSnapshot snapShot) :
-        id = id ?? '',
-        name = snapShot['name'] ?? 'Capacity Counter',
-        capacity = snapShot['capacity'] ?? 20,
-        count = snapShot['count'] ?? 0;
+  Business.fromMap(Map snapshot, String id) {
+    this.id = id ?? '';
+    name = snapshot['name'] ?? 'Capacity Counter';
+    capacity = snapshot['capacity'] ?? 20;
+    count = snapshot['count'] ?? 0;
+    //notifyListeners();
+  }
 
-   */
 
-  Business.fromMap(Map snapshot, String id):
-        id = id ?? '',
-        name = snapshot['name'] ?? 'Capacity Counter',
-        capacity = snapshot['capacity'] ?? 20;
-        //count = snapshot['count'] ?? 0;
+  void businessCapacity(int cap) {
+    capacity = cap;
+    notifyListeners();
+  }
+
+  //String get businessName => name;
+  //int get businessCapacity => capacity;
 
   toJson() {
     return {
       "name": name,
       "capacity": capacity,
-      //"count": count,
+      "count": count,
     };
+  }
+
+  void businessName(String title) {
+    name = title;
+    notifyListeners();
+  }
+
+  void businessCount(int c) {
+    count = c;
+    notifyListeners();
   }
 }

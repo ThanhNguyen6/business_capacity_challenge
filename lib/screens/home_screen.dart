@@ -18,10 +18,10 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final _minCounter=0;
-  final _counter=0;
+  int _counter=0;
   Color _c = Color.fromARGB(240, 227, 245, 239);
 
-  int _incrementCounter(int inc, int _maxCounter, int _counter) {
+  int _incrementCounter(int inc, int _maxCounter, int counter) {
     int temp = _counter + inc;
     if (_minCounter <= temp && temp< _maxCounter ) {
       setState(() => _counter += inc);
@@ -42,10 +42,9 @@ class _MyHomePageState extends State<MyHomePage> {
     @override
     Widget build(BuildContext context) {
       final crudProvider = Provider.of<CRUDModel>(context);
-      final businessProvider = Provider.of<Business>(context);
-      String name = businessProvider.name ?? widget.title;
-      int cap = businessProvider.capacity ?? 20;
-      int currentCount = businessProvider.count ?? 0;
+      var name;
+      var capacity;
+
       return Scaffold(
         backgroundColor: _c,
         body: Stack(
@@ -76,8 +75,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                 style: Theme.of(context).textTheme.headline4,
                               );
                             }
-                            var counter = snapshot.data.data()['count'];
-                            return Text('$counter', style: Theme.of(context).textTheme.headline4);
+                            _counter = snapshot.data.data()['count'];
+                            capacity = snapshot.data.data()['capacity'];
+                            return Text('$_counter', style: Theme.of(context).textTheme.headline4);
                           })
                   ),
                   Row(
@@ -86,17 +86,15 @@ class _MyHomePageState extends State<MyHomePage> {
                       IconButton(
                         icon: Icon(FontAwesomeIcons.userMinus),
                         onPressed: () async {
-                            int updateCount = _incrementCounter(-1, cap, currentCount);
-                            businessProvider.businessCount(updateCount);
-                            await crudProvider.updateBusiness(Business(name:businessProvider.name, capacity: businessProvider.capacity, count: updateCount), 'test');
+                            int updateCount = _incrementCounter(-1, capacity, _counter);
+                            await crudProvider.updateBusiness(Business(name:name, capacity: capacity, count: updateCount), 'test');
                             },
                       ),
                       IconButton(
                         icon: Icon(FontAwesomeIcons.userPlus),
                         onPressed: () async {
-                          int updateCount = _incrementCounter(1, cap, currentCount);
-                          businessProvider.businessCount(updateCount);
-                          await crudProvider.updateBusiness(Business(name:businessProvider.name, capacity: businessProvider.capacity, count: updateCount), 'test');
+                          int updateCount = _incrementCounter(1, capacity, _counter);
+                          await crudProvider.updateBusiness(Business(name:name, capacity: capacity, count: updateCount), 'test');
                         },
                       ),
                     ],
@@ -113,8 +111,30 @@ class _MyHomePageState extends State<MyHomePage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          NumberWheel(number: currentCount~/10),
-                          NumberWheel(number: currentCount%10),
+                          Flexible(
+                              child: new StreamBuilder<DocumentSnapshot>(
+                                  stream: crudProvider.fetchBusinessDocAsStream('test'),
+                                  builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                                    if (!snapshot.hasData) {
+                                      return NumberWheel(number: _counter~/10);
+                                    }
+                                    _counter = snapshot.data.data()['count'];
+                                    capacity = snapshot.data.data()['capacity'];
+                                    return NumberWheel(number: _counter~/10);
+                                  })
+                          ),
+                          Flexible(
+                              child: new StreamBuilder<DocumentSnapshot>(
+                                  stream: crudProvider.fetchBusinessDocAsStream('test'),
+                                  builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                                    if (!snapshot.hasData) {
+                                      return NumberWheel(number: _counter%10);
+                                    }
+                                    _counter = snapshot.data.data()['count'];
+                                    capacity = snapshot.data.data()['capacity'];
+                                    return NumberWheel(number: _counter%10);
+                                  })
+                          ),
                         ],
                       ),
                     ),
@@ -135,19 +155,17 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     Padding(
                       padding: const EdgeInsets.all(24.0),
-                      child:
+                        // TODO: show business name here if it has been saved in the settings page
+                        child:
                       new StreamBuilder<DocumentSnapshot>(
                           stream: crudProvider.fetchBusinessDocAsStream('test'),
                           builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
                             if (!snapshot.hasData) {
                               return Text("Capacity Counter");
                             }
-                            var name = snapshot.data.data()['name'];
+                            name = snapshot.data.data()['name'];
                             return Text('To $name', style: TextStyle(fontSize: 20));
                           })
-                      // TODO: show business name here if it has been saved in the settings page
-                      //Text(name,
-                      //    style: TextStyle(fontSize: 20)),
                     ),
                     IconButton(
                       icon: Icon(Icons.settings),

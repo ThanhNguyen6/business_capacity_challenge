@@ -47,10 +47,6 @@ class WelcomeScreen extends StatelessWidget {
             SizedBox(
               height: 10,
             ),
-            //Text('To ${name}', style: GoogleFonts.yesevaOne(
-            //  textStyle: TextStyle(color: Color(0xFF650C2A), fontWeight: FontWeight.bold, fontSize: 30.0),
-            //), //child
-            //),
             Flexible(
               child: new StreamBuilder<DocumentSnapshot>(
                 stream: crudProvider.fetchBusinessDocAsStream('test'),

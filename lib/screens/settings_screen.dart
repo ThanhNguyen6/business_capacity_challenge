@@ -5,12 +5,11 @@ import 'package:provider/provider.dart';
 import '../core/viewmodels/CRUDModel.dart';
 import '../core/models/businessInfo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cool_alert/cool_alert.dart';
 // TODO: save these values and use them in the home screen
 
 
 class SettingsScreen extends StatelessWidget {
-  //final Business bInfo;
-  //SettingsScreen({this.bInfo});
   final _formKey = GlobalKey<FormState>();
 
   String capacityValidator(String value) {
@@ -19,10 +18,10 @@ class SettingsScreen extends StatelessWidget {
     }
     var n = num.tryParse(value);
     if (n < 0) {
-      return 'Capacity can not be less than 0';
+      return 'Capacity < 0';
     }
     if (n > 99) {
-      return 'Capacity can not be over 99';
+      return 'Capacity > 99';
     }
     return null;
   }
@@ -32,7 +31,6 @@ class SettingsScreen extends StatelessWidget {
     String tempTitle;
     String tempCapacity;
     final crudProvider = Provider.of<CRUDModel>(context);
-    //final businessProvider = Provider.of<Business>(context);
     return StreamBuilder<DocumentSnapshot>(
         stream: crudProvider.fetchBusinessDocAsStream('test'),
         builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
@@ -42,6 +40,7 @@ class SettingsScreen extends StatelessWidget {
           String title = snapshot.data.data()['name'];
           var capacity = snapshot.data.data()['capacity'];
           var currentCount = snapshot.data.data()['count'];
+
           return Scaffold(
             backgroundColor: Color.fromARGB(240, 227, 245, 239),
             body: Center(
@@ -117,7 +116,11 @@ class SettingsScreen extends StatelessWidget {
                                 }
                               }
                               await crudProvider.updateBusiness(Business(name:title, capacity: capacity, count: currentCount), 'test');
-
+                              CoolAlert.show(
+                                context: context,
+                                type: CoolAlertType.success,
+                                text: "Completed successfully! If there is no input information, nothing is changed",
+                              );
                             }
                           },
                         ),

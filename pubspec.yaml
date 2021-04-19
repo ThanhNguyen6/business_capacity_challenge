@@ -11,6 +11,12 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.1
   font_awesome_flutter: any
+  provider: ^4.3.3
+  firebase_core: ^1.0.3
+  cloud_firestore: ^1.0.5
+  google_fonts: ^1.1.2
+  get_it: ^6.1.1
+  cool_alert: ^1.0.3
 
 dev_dependencies:
   flutter_test:
